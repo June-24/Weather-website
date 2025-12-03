@@ -44,6 +44,8 @@
                 <div id="weather-content" class="hidden text-center">
                     <p id="weather-icon" class="text-6xl mb-2"></p>
                     <p id="weather-message" class="text-xl font-medium"></p>
+                    <div id="recContainer"></div>
+
                 </div>
                 <p id="weather-error" class="hidden text-red-100 font-medium"></p>
             </div>
@@ -123,6 +125,346 @@
                 default: return { message: `Unknown weather code: ${code}`, icon: '❓' };
             }
         }
+        const weatherRecommendations = {
+    0: [
+        "Wear sunglasses to protect your eyes.",
+        "Apply sunscreen if you're heading out.",
+        "Carry a water bottle to stay hydrated.",
+        "Wear light breathable clothing.",
+        "Perfect day for outdoor activities.",
+        "Take breaks in the shade to avoid overheating.",
+        "Avoid wearing dark clothes that trap heat.",
+        "Great weather for outdoor photography.",
+        "Keep a hat or cap to reduce sun exposure.",
+        "Plan longer walks during early morning or late afternoon."
+    ],
+    1: [
+        "Sunglasses recommended for bright moments.",
+        "Carry a light jacket just in case.",
+        "Great time for a short outdoor walk.",
+        "Stay hydrated throughout the day.",
+        "Use sunscreen if you'll be outside long.",
+        "Enjoy the sunshine but avoid peak UV hours.",
+        "Keep a hat with you for comfort.",
+        "Good day for cycling outdoors.",
+        "Mild weather — perfect for casual outings.",
+        "Keep an eye on sudden temperature changes."
+    ],
+    2: [
+        "Bring a light jacket as weather may shift.",
+        "Good for outdoor activities with mild sunlight.",
+        "Keep sunglasses handy.",
+        "Stay hydrated during long walks.",
+        "Check hourly forecast if outside long.",
+        "Great conditions for running or jogging.",
+        "UV may still be moderate — apply sunscreen.",
+        "Clouds may increase later — plan ahead.",
+        "Comfortable day for travel.",
+        "Watch for brief windy spells."
+    ],
+    3: [
+        "Carry a light jacket for cooler temperatures.",
+        "Great day for photography with soft lighting.",
+        "Consider carrying a small umbrella.",
+        "Wear layered clothing.",
+        "Check for possible rain later.",
+        "Ideal weather for long walks.",
+        "Avoid thin clothing — it may feel colder.",
+        "Plan indoor options too just in case.",
+        "Roads may be damp — walk carefully.",
+        "Keep your phone charged in case the weather changes."
+    ],
+    45: [
+        "Drive slower and keep headlights low beam.",
+        "Wear reflective clothing when walking.",
+        "Allow extra travel time.",
+        "Avoid biking in poor visibility.",
+        "Keep your phone charged for safety.",
+        "Use fog lights if your vehicle has them.",
+        "Avoid running or cycling near roads.",
+        "Stay in well-lit areas when walking.",
+        "Keep windows slightly open to prevent fogging.",
+        "Avoid unnecessary travel if visibility is extremely low."
+    ],
+    48: [
+        "Drive slower and keep headlights low beam.",
+        "Wear reflective clothing when walking.",
+        "Allow extra travel time.",
+        "Avoid biking in poor visibility.",
+        "Keep your phone charged for safety.",
+        "Use fog lights if available.",
+        "Avoid walking near busy roads.",
+        "Visibility may worsen quickly — stay alert.",
+        "Keep car windows clear from inside moisture.",
+        "Stay indoors when possible."
+    ],
+    51: [
+        "Carry a waterproof jacket.",
+        "Avoid wearing slippery shoes.",
+        "Protect electronics from moisture.",
+        "Drive slowly — roads may be slick.",
+        "Use an umbrella for short walks.",
+        "Avoid long outdoor activities.",
+        "Wear waterproof or quick-dry clothing.",
+        "Be cautious on painted road lines.",
+        "Drizzle can turn heavy — stay aware.",
+        "Choose water-resistant bags if commuting."
+    ],
+    53: [
+        "Carry a waterproof jacket.",
+        "Avoid wearing slippery shoes.",
+        "Protect electronics from moisture.",
+        "Drive slowly — roads may be slick.",
+        "Use an umbrella for short walks.",
+        "Keep your hood or cap ready.",
+        "Sidewalks may be wet — walk carefully.",
+        "Moisture may fog glasses — wipe lenses often.",
+        "Expect brief increases in drizzle intensity.",
+        "Carry a microfiber cloth for glasses or screens."
+    ],
+    55: [
+        "Carry a waterproof jacket.",
+        "Avoid wearing slippery shoes.",
+        "Protect electronics from moisture.",
+        "Drive slowly — roads may be slick.",
+        "Use an umbrella for short walks.",
+        "Avoid long-distance outdoor plans.",
+        "Wear water-resistant pants.",
+        "Puddles may form — walk around them.",
+        "Check weather updates frequently.",
+        "Bring extra socks if commuting long distances."
+    ],
+    56: [
+        "Wear proper winter shoes — freezing drizzle is slippery.",
+        "Use gloves to stay warm.",
+        "Drive carefully — black ice possible.",
+        "Carry a warm jacket.",
+        "Avoid long-distance travel.",
+        "Walk slowly to avoid slipping.",
+        "Keep salt or traction aids in your car.",
+        "Wear a beanie or head warmer.",
+        "Avoid stairs or steep slopes outdoors.",
+        "Plan indoor activities instead."
+    ],
+    57: [
+        "Wear proper winter shoes — freezing drizzle is slippery.",
+        "Use gloves to stay warm.",
+        "Drive carefully — black ice possible.",
+        "Carry a warm jacket.",
+        "Avoid long-distance travel.",
+        "Move cautiously on sidewalks.",
+        "Protect your phone from the cold.",
+        "Wear thermal socks.",
+        "Avoid icy roads when possible.",
+        "Stay indoors unless necessary."
+    ],
+    61: [
+        "Carry an umbrella or raincoat.",
+        "Wear waterproof shoes.",
+        "Beware of slippery sidewalks.",
+        "Put electronics in waterproof bags.",
+        "Drive slower than usual.",
+        "Avoid staying in wet clothes too long.",
+        "Plan extra commute time.",
+        "Wear quick-dry layers.",
+        "Expect visibility to reduce briefly.",
+        "Stay away from roadsides during splashes."
+    ],
+    63: [
+        "Carry an umbrella or raincoat.",
+        "Wear waterproof shoes.",
+        "Beware of slippery sidewalks.",
+        "Put electronics in waterproof bags.",
+        "Drive slower than usual.",
+        "Rain may intensify — stay prepared.",
+        "Use waterproof covers for backpacks.",
+        "Avoid cycling if possible.",
+        "Hydrate despite the cool weather.",
+        "Watch out for puddles and mud."
+    ],
+    65: [
+        "Carry an umbrella or raincoat.",
+        "Avoid unnecessary outdoor activities.",
+        "Wear waterproof shoes.",
+        "Drive carefully — heavy rain reduces visibility.",
+        "Keep electronic items protected.",
+        "Expect delays in public transport.",
+        "Avoid areas prone to flooding.",
+        "Secure loose items if it’s windy.",
+        "Avoid walking under trees in strong rain.",
+        "Wait for rain to ease before heading out."
+    ],
+    66: [
+        "Avoid unnecessary travel — freezing rain is dangerous.",
+        "Wear shoes with good grip.",
+        "Drive extremely cautiously.",
+        "Dress warmly with layers.",
+        "Beware of black ice.",
+        "Stay indoors whenever possible.",
+        "Check road warnings regularly.",
+        "Protect exposed skin from cold.",
+        "Keep emergency supplies ready.",
+        "Walk slowly and avoid slopes."
+    ],
+    67: [
+        "Avoid unnecessary travel — freezing rain is dangerous.",
+        "Wear shoes with good grip.",
+        "Drive extremely cautiously.",
+        "Dress warmly with layers.",
+        "Beware of black ice.",
+        "Keep your phone fully charged.",
+        "Stay indoors unless absolutely necessary.",
+        "Avoid parking under trees.",
+        "Watch for falling ice from roofs.",
+        "Monitor weather alerts often."
+    ],
+    71: [
+        "Wear warm layers and gloves.",
+        "Walk carefully — snow may hide ice.",
+        "Give extra time for commuting.",
+        "Wear snow-friendly boots.",
+        "Check for school or transit delays.",
+        "Keep hands protected with warm gloves.",
+        "Avoid long outdoor stays.",
+        "Salt may be on sidewalks — walk carefully.",
+        "Visibility may reduce slightly — be alert.",
+        "Carry tissues for cold air."
+    ],
+    73: [
+        "Wear warm layers and gloves.",
+        "Walk carefully — snow may hide ice.",
+        "Give extra time for commuting.",
+        "Wear snow-friendly boots.",
+        "Check for school or transit delays.",
+        "Avoid slippery staircases.",
+        "Winter air may dry skin — use moisturizer.",
+        "Keep your phone battery warm.",
+        "Dress with thermal layers.",
+        "Expect moderate accumulation on surfaces."
+    ],
+    75: [
+        "Avoid unnecessary travel — heavy snow.",
+        "Wear thermal layers.",
+        "Carry emergency supplies if driving.",
+        "Keep phones fully charged.",
+        "Expect delays in transportation.",
+        "Stay updated with weather alerts.",
+        "Roads may be blocked — check conditions.",
+        "Wear insulated boots.",
+        "Visibility may be very low — be cautious.",
+        "Stay indoors unless essential."
+    ],
+    77: [
+        "Wear warm layers.",
+        "Walk carefully on icy surfaces.",
+        "Avoid long-distance travel.",
+        "Wear good-grip footwear.",
+        "Check transport conditions.",
+        "Snow grains may reduce visibility.",
+        "Bring a flashlight if out late.",
+        "Use waterproof gloves.",
+        "Sidewalks may be uneven — walk slowly.",
+        "Avoid driving on untreated roads."
+    ],
+    80: [
+        "Carry an umbrella.",
+        "Wear quick-dry clothes.",
+        "Avoid cycling in rain.",
+        "Protect electronics.",
+        "Check for delays.",
+        "Expect sudden strong showers.",
+        "Wear water-resistant shoes.",
+        "Be cautious of slippery painted roads.",
+        "Secure loose items if windy.",
+        "Keep spare socks if commuting."
+    ],
+    81: [
+        "Carry an umbrella.",
+        "Wear quick-dry clothes.",
+        "Avoid cycling in rain.",
+        "Protect electronics.",
+        "Check for delays.",
+        "Rain may intensify quickly.",
+        "Sidewalks can get slick — walk carefully.",
+        "Avoid standing under trees.",
+        "Wear waterproof accessories.",
+        "Plan indoor alternatives."
+    ],
+    82: [
+        "Stay indoors if possible due to violent showers.",
+        "Avoid travel in heavy rainfall.",
+        "Watch for flooding alerts.",
+        "Do not bicycle in heavy rain.",
+        "Unplug electronics during severe rain.",
+        "Avoid low-lying areas.",
+        "Secure outdoor belongings.",
+        "Stay away from large trees.",
+        "Delay outdoor activities.",
+        "Keep emergency alerts turned on."
+    ],
+    85: [
+        "Wear warm clothing.",
+        "Watch for ice patches.",
+        "Keep gloves and warm socks on.",
+        "Avoid unnecessary travel.",
+        "Check road conditions before driving.",
+        "Visibility may drop during showers.",
+        "Use insulated boots.",
+        "Keep emergency items ready.",
+        "Clear snow from shoes indoors.",
+        "Walk carefully on sidewalks."
+    ],
+    86: [
+        "Avoid travel — heavy snow showers.",
+        "Wear insulated clothing.",
+        "Keep emergency supplies.",
+        "Watch for road closures.",
+        "Walk carefully on slippery surfaces.",
+        "Visibility may be very low.",
+        "Wear layered winter gear.",
+        "Avoid driving unless required.",
+        "Keep your phone charged.",
+        "Snow may accumulate quickly — stay cautious."
+    ],
+    95: [
+        "Stay indoors during thunderstorms.",
+        "Avoid open fields and tall structures.",
+        "Unplug sensitive electronics.",
+        "Delay outdoor activities.",
+        "Do not stand near windows.",
+        "Avoid using wired electronics.",
+        "Stay away from water (pools/showers).",
+        "Secure outdoor items.",
+        "Listen for emergency alerts.",
+        "Avoid driving in lightning-heavy areas."
+    ],
+    96: [
+        "Stay away from windows during hail.",
+        "Avoid travel — hail can damage cars.",
+        "Seek indoor shelter.",
+        "Unplug electronics.",
+        "Monitor weather alerts.",
+        "Protect pets or bring them indoors.",
+        "Stay clear of glass surfaces.",
+        "Avoid parking under trees.",
+        "Keep emergency numbers handy.",
+        "Wait for hail to stop before going outside."
+    ],
+    99: [
+        "Stay away from windows during severe hail.",
+        "Seek immediate indoor shelter.",
+        "Avoid driving — hail can break windshields.",
+        "Unplug electronics.",
+        "Monitor emergency alerts.",
+        "Move to inner rooms for safety.",
+        "Protect your head if caught outside.",
+        "Stay indoors until storm passes.",
+        "Check for damage cautiously after storm.",
+        "Avoid all outdoor activity during hail."
+    ]
+};
+
+
 
         // --- DOM Elements ---
         const weatherLoading = document.getElementById('weather-loading');
@@ -139,30 +481,59 @@
         document.addEventListener('DOMContentLoaded', async () => {
             try {
                 const response = await fetch(`${API_URL}/weather`);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                
-                // Assuming the backend sends JSON like: {"weatherCode": 3}
                 const data = await response.json();
-                const weatherCode = data.weatherCode;
 
-                if (weatherCode === undefined) {
-                     throw new Error('Invalid data format from server.');
-                }
+                if (!response.ok || !data.weatherCode) throw new Error();
 
-                const { message, icon } = interpretWeatherCode(parseInt(weatherCode, 10));
+                const code = parseInt(data.weatherCode);
+                const { message, icon } = interpretWeatherCode(code);
 
                 // Display weather
                 weatherIcon.textContent = icon;
                 weatherMessage.textContent = message;
+
+                // Show 2 random recommendations
+                const recs = weatherRecommendations[code] || [];
+                const two = recs.sort(() => 0.5 - Math.random()).slice(0, 5);
+
+                recContainer.innerHTML = `
+    <div class="mt-4 bg-white bg-opacity-10 p-4 rounded-lg text-left">
+        <button 
+            id="recToggle"
+            class="flex items-center justify-between w-full text-left text-lg font-semibold mb-2 hover:opacity-80 transition"
+        >
+            Recommendations
+            <span id="recArrow" class="transition-transform text-xl">▼</span>
+        </button>
+
+        <div id="recContent" class="hidden mt-2">
+            <ul class="list-disc list-inside text-sm">
+                ${two.map(r => `<li>${r}</li>`).join('')}
+            </ul>
+        </div>
+    </div>
+`;
+document.getElementById("recToggle").addEventListener("click", () => {
+    const content = document.getElementById("recContent");
+    const arrow = document.getElementById("recArrow");
+
+    content.classList.toggle("hidden");
+
+    // Flip arrow direction
+    if (content.classList.contains("hidden")) {
+        arrow.style.transform = "rotate(0deg)";
+    } else {
+        arrow.style.transform = "rotate(180deg)";
+    }
+});
+
+
+
                 weatherLoading.classList.add('hidden');
                 weatherContent.classList.remove('hidden');
 
             } catch (error) {
-                console.error('Failed to fetch weather:', error);
-                weatherError.textContent = 'Could not load weather. Please try again later.';
+                weatherError.textContent = "Could not load weather. Please try again later.";
                 weatherLoading.classList.add('hidden');
                 weatherError.classList.remove('hidden');
             }
